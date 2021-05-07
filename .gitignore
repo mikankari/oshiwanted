@@ -1,0 +1,11 @@
+css/*.css
+
+img/*.png
+
+js/*.js
+node_modules/
+
+*.html
+worker.js
+
+.DS_Store

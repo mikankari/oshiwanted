@@ -1,0 +1,95 @@
+doctype html
+html
+	head
+		meta(charset="UTF-8")
+		meta(name="viewport" content="width=device-width, user-scalable=no")
+		meta(name="apple-mobile-web-app-capable" content="yes")
+		link(rel="icon" href="img/app-icon.png")
+		link(rel="apple-touch-icon" href="img/app-icon.png")
+		link(rel="stylesheet" href="css/semantic.min.css")
+		link(rel="stylesheet" href="css/index.css")
+		script(src="js/vue.min.js")
+		script(src="js/semantic-ui-vue.min.js")
+		script(src="js/index.js" defer)
+		title 交換募集
+		//nobanner
+	body
+		#app
+			sui-menu(fixed borderless)
+				sui-menu-item(header) {{ document.title }}
+			sui-container.main
+				sui-form(
+					action="https://twitter.com/intent/tweet"
+					@submit="save"
+				)
+					input(
+						type="hidden"
+						name="text"
+						v-model="tweetText"
+					)
+					sui-form-field
+						label 作品
+						sui-dropdown(
+							selection,
+							:options="workOptions"
+							v-model="work"
+						)
+					sui-form-field
+						label イベント・グッズ種類
+						textarea(
+							placeholder="例）ナンジャ ハート型缶バッジ"
+							rows="2"
+							v-model="goods"
+						)
+					sui-form-field(v-for="label, dataName in {gives: '譲る', takes: '求む'}")
+						label {{ label }}
+						sui-form-fields(
+							v-if="worksInfo[work]"
+							inline
+						)
+							sui-form-field(v-for="_, characterName in worksInfo[work].characters")
+								sui-segment(basic)
+									sui-checkbox(
+										:label="characterName",
+										:value="characterName"
+										v-model="$data[dataName]"
+									)
+					sui-form-field
+						label 方法
+						sui-form-fields(inline)
+							sui-form-field
+								sui-segment(basic)
+									sui-checkbox(
+										label="手渡し"
+										v-model="byHand"
+									)
+							sui-form-field
+								input(
+									type="text"
+									placeholder="例）本日都内"
+									size="17"
+									v-model="handAt"
+								)
+							sui-form-field
+								sui-segment(basic)
+									sui-checkbox(
+										label="郵送"
+										v-model="byMail"
+									)
+							sui-form-field
+								sui-segment(basic)
+									sui-checkbox(
+										label="検索からでも"
+										v-model="welcomeFromSearch"
+									)
+					sui-form-field
+						sui-button(
+							type="submit"
+							social="twitter"
+						)
+							| ツイート作成
+				sui-container(textAlign="center").footer
+					sui-message(v-if="! isWebView")
+						| ブラウザのメニューから「ホーム画面に追加」を選択して、アプリをインストールできます
+		.adsense
+			script(src="https://cache1.value-domain.com/xa.j?site=mikankari.s500.xrea.com")
